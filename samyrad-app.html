@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAMYRAD 2026 — Conference Guide</title>
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1B2140">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   BRAND TOKENS — change these two accents to reskin the whole app.
+   ========================================================================= */
+:root{
+  --bg:#F5F5F3; --surface:#FFFFFF; --ink:#1B2140; --ink-soft:#5B6178;
+  --line:#E7E7E2; --accent:#C68A2E;
+  --t-keynote:#B8791E; --t-session:#3B4E8C; --t-virtual:#1F8A70; --t-panel:#7A4E8C; --t-break:#9A9A93;
+  --radius:16px; --shadow:0 1px 2px rgba(27,33,64,.06), 0 8px 24px rgba(27,33,64,.06); --maxw:560px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px}
+
+.appbar{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+.appbar .wrap{padding:0 4px}
+.wordmark{font-family:'Fraunces',serif;font-weight:700;font-size:22px;letter-spacing:.3px}
+.wordmark span{color:var(--accent)}
+.appbar .meta{font-size:12.5px;color:#B9BDD0;margin-top:2px}
+
+.screen{padding-top:18px;min-height:60vh}
+.screen[hidden]{display:none}
+.screen-title{font-family:'Fraunces',serif;font-weight:600;font-size:26px;margin-bottom:2px}
+.screen-sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:16px}
+
+.controls{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px;box-shadow:var(--shadow)}
+.seg button{flex:1;padding:9px 8px;border-radius:9px;font-size:14px;font-weight:600;color:var(--ink-soft)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:500;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+.chip[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-size:14px;box-shadow:var(--shadow)}
+
+.timegroup{font-size:12px;font-weight:700;color:var(--ink-soft);letter-spacing:.6px;text-transform:uppercase;margin:20px 0 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left}
+.card .body{flex:1;min-width:0}
+.card .time{font-size:12.5px;color:var(--ink-soft);font-weight:600;font-variant-numeric:tabular-nums}
+.card h3{font-size:15.5px;font-weight:600;line-height:1.3;margin:3px 0 6px}
+.card .metarow{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--ink-soft)}
+.card .metarow .who{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:#F0F0EC;color:var(--ink)}
+.pill .dot{width:7px;height:7px;border-radius:50%}
+.star{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line);color:#C4C4BD}
+.star.on{color:var(--accent);border-color:var(--accent);background:#FBF4E7}
+.star svg{width:19px;height:19px}
+.break-card{background:transparent;box-shadow:none;border-style:dashed;justify-content:center}
+.break-card h3{margin:0;color:var(--ink-soft)}
+
+.speaker{display:flex;gap:13px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px;margin-bottom:10px;width:100%;text-align:left}
+.avatar{flex:none;width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:19px;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.speaker .body h3{font-size:15.5px;font-weight:600}
+.speaker .body p{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+
+/* ---- Hub tiles ---- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 14px;text-align:left;display:flex;flex-direction:column;gap:10px;min-height:112px;position:relative}
+.tile:active{transform:scale(.99)}
+.tile .ic{width:40px;height:40px;border-radius:11px;background:#FBF4E7;color:var(--accent);display:grid;place-items:center}
+.tile .ic svg{width:22px;height:22px}
+.tile h3{font-size:15px;font-weight:600;line-height:1.25}
+.tile p{font-size:12px;color:var(--ink-soft);margin-top:-4px}
+.tile .badge2{position:absolute;top:14px;right:14px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:99px;display:grid;place-items:center;padding:0 6px}
+
+/* ---- Sub-pages ---- */
+.subhead{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.backbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+.backbtn svg{width:20px;height:20px}
+.subhead h1{font-family:'Fraunces',serif;font-size:23px;font-weight:600}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.block h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:6px}
+.block h4{font-size:14px;font-weight:700;margin:12px 0 3px}
+.block p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+.block .linkrow{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-weight:600;font-size:14px}
+.ann{border-left:3px solid var(--accent);padding-left:12px;margin-bottom:16px}
+.ann .d{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px}
+.ann h3{font-family:'Inter',sans-serif;font-size:15.5px;font-weight:600;margin:2px 0 4px}
+.ann p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+.tier-label{font-size:12px;font-weight:700;color:var(--ink-soft);letter-spacing:.6px;text-transform:uppercase;margin:18px 0 8px}
+.logos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.logo-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);height:78px;display:grid;place-items:center;padding:10px;text-align:center;font-weight:600;color:var(--ink);font-size:13.5px;text-decoration:none}
+.logo-card img{max-height:52px;max-width:100%;object-fit:contain}
+.person{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.person:first-child{border-top:none}
+.person .body h3{font-size:15px;font-weight:600}
+.person .body p{font-size:12.5px;color:var(--ink-soft)}
+.mapbox{border:1px dashed var(--line);border-radius:12px;height:180px;display:grid;place-items:center;color:var(--ink-soft);font-size:13px;text-align:center;padding:16px;background:#FAFAF8}
+.mapbox img{width:100%;height:100%;object-fit:cover;border-radius:11px}
+.langrow{display:flex;gap:10px;margin-top:6px}
+.langbtn{flex:1;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-weight:600;font-size:15px;box-shadow:var(--shadow)}
+.langbtn[aria-pressed="true"]{border-color:var(--accent);background:#FBF4E7;color:var(--ink)}
+
+.empty{text-align:center;padding:56px 24px;color:var(--ink-soft)}
+.empty svg{width:40px;height:40px;color:#CFCFC7;margin-bottom:12px}
+.empty h3{font-family:'Fraunces',serif;font-size:19px;color:var(--ink);margin-bottom:4px}
+
+.modal-bg{position:fixed;inset:0;background:rgba(27,33,64,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);width:100%;max-width:var(--maxw);border-radius:22px 22px 0 0;padding:20px 18px calc(26px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto;animation:slideup .22s ease}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal .grip{width:38px;height:4px;border-radius:99px;background:var(--line);margin:0 auto 16px}
+.modal .m-time{font-size:13px;color:var(--ink-soft);font-weight:600}
+.modal h2{font-family:'Fraunces',serif;font-size:22px;font-weight:600;line-height:1.25;margin:6px 0 12px}
+.modal .m-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.modal .m-body{font-size:14.5px;line-height:1.62;color:#3A3F57}
+.m-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;text-align:center;padding:12px;border-radius:12px;font-weight:600;font-size:14px;text-decoration:none}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-ghost{background:#F0F0EC;color:var(--ink)}
+.btn-accent{background:var(--accent);color:#fff}
+.m-speaker{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:saturate(150%) blur(12px);border-top:1px solid var(--line);padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+.tabbar .wrap{display:flex;justify-content:space-around}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#A6A9B8;padding:4px 14px;border-radius:10px;position:relative}
+.tab svg{width:23px;height:23px}
+.tab[aria-current="true"]{color:var(--ink)}
+.tab .badge{position:absolute;top:-2px;right:6px;background:var(--accent);color:#fff;font-size:10px;min-width:16px;height:16px;border-radius:99px;display:grid;place-items:center;padding:0 4px}
+.att{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-top:1px solid var(--line)}
+.att:first-child{border-top:none;padding-top:2px}
+.att .body{flex:1;min-width:0}
+.att .body h3{font-size:15px;font-weight:600}
+.att .body .aff{font-size:12.5px;color:var(--ink-soft);margin-top:1px}
+.att .body .int{font-size:12.5px;color:var(--ink-soft);margin-top:4px;font-style:italic}
+.linkpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.linkpill{font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;background:#F0F0EC;color:var(--ink);text-decoration:none}
+.att-note{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:12px}
+.att-search{margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<header class="appbar"><div class="wrap">
+  <div class="wordmark">SAMY<span>RAD</span></div>
+  <div class="meta">Oct 5–6, 2026 · Seville, Spain + Online</div>
+</div></header>
+
+<main class="wrap">
+  <section id="screen-schedule" class="screen">
+    <h1 class="screen-title" data-t="sch_title"></h1>
+    <p class="screen-sub" data-t="sch_sub"></p>
+    <div class="controls">
+      <div class="seg" id="dayToggle" role="group"></div>
+      <input class="search" id="search" type="search" data-tph="search_ph">
+      <div class="chips" id="trackChips" role="group"></div>
+    </div>
+    <div id="scheduleList"></div>
+  </section>
+
+  <section id="screen-speakers" class="screen" hidden>
+    <h1 class="screen-title" data-t="spk_title"></h1>
+    <p class="screen-sub" data-t="spk_sub"></p>
+    <div id="speakerList"></div>
+  </section>
+
+  <section id="screen-saved" class="screen" hidden>
+    <h1 class="screen-title" data-t="sav_title"></h1>
+    <p class="screen-sub" data-t="sav_sub"></p>
+    <div id="savedList"></div>
+  </section>
+
+  <section id="screen-more" class="screen" hidden>
+    <h1 class="screen-title" data-t="more_title"></h1>
+    <p class="screen-sub" data-t="more_sub"></p>
+    <div class="tiles" id="hubTiles"></div>
+  </section>
+
+  <section id="screen-section" class="screen" hidden>
+    <div class="subhead">
+      <button class="backbtn" id="backBtn" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h1 id="sectionTitle"></h1>
+    </div>
+    <div id="sectionBody"></div>
+  </section>
+</main>
+
+<div class="modal-bg" id="modalBg"><div class="modal" role="dialog" aria-modal="true"><div class="grip"></div><div id="modalContent"></div></div></div>
+
+<nav class="tabbar"><div class="wrap">
+  <button class="tab" data-screen="schedule" aria-current="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span data-t="nav_schedule"></span>
+  </button>
+  <button class="tab" data-screen="speakers">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span data-t="nav_speakers"></span>
+  </button>
+  <button class="tab" data-screen="saved">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 17.3l-6 3.7 1.6-6.9L2 9.2l7-.6L12 2l3 6.6 7 .6-5.6 4.9 1.6 6.9z"/></svg><span data-t="nav_saved"></span>
+    <span class="badge" id="savedBadge" hidden>0</span>
+  </button>
+  <button class="tab" data-screen="more">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span data-t="nav_more"></span>
+  </button>
+</div></nav>
+
+<script>
+/* =========================================================================
+   ▼▼▼  YOUR CONTENT — edit inside this block only. All text is placeholder. ▼▼▼
+   ========================================================================= */
+
+const CONFERENCE = {
+  venueName:"FIBES — Seville Conference & Exhibition Centre",
+  venueAddress:"Av. Alcalde Luis Uruñuela 1, 41020 Sevilla, Spain",
+  mapUrl:"https://maps.google.com/?q=FIBES+Sevilla",
+  floorPlanImage:"",   // paste an image URL of your floor plan to show it here
+  wifi:"Network: SAMYRAD2026 · Password: (shared on-site)",
+  contactEmail:"info@horizonneviews.com",
+  about:"SAMYRAD is a global academic conference on AI in education, bringing researchers and educators together across an in-person and virtual programme."
+};
+
+const TRACKS = {
+  keynote:{label:"Keynote",color:"var(--t-keynote)"},
+  session:{label:"In-person",color:"var(--t-session)"},
+  virtual:{label:"Virtual",color:"var(--t-virtual)"},
+  panel:{label:"Panel",color:"var(--t-panel)"},
+  break:{label:"Break",color:"var(--t-break)"}
+};
+const DAYS = [{id:"2026-10-05",label:"Sun, Oct 5"},{id:"2026-10-06",label:"Mon, Oct 6"}];
+
+const SPEAKERS = [
+  {id:"s1",name:"Dr. Lena Ortiz",role:"Professor of Learning Sciences",org:"Sample University",photo:"",bio:"Placeholder bio. Replace with the speaker's real biography."},
+  {id:"s2",name:"Prof. Daniel Okafor",role:"Director, AI & Pedagogy Lab",org:"Sample Institute",photo:"",bio:"Placeholder bio."},
+  {id:"s3",name:"Dr. Mei Tanaka",role:"Senior Researcher",org:"Sample Lab",photo:"",bio:"Placeholder bio."},
+  {id:"s4",name:"Dr. Amara Bello",role:"Lecturer in Educational Tech",org:"Sample College",photo:"",bio:"Placeholder bio."}
+];
+
+const SESSIONS = [
+  {id:"a1",day:"2026-10-05",start:"09:00",end:"09:30",track:"session",title:"Registration & Welcome Coffee",room:"Main Foyer",speakers:[],abstract:"Collect your badge and settle in."},
+  {id:"a2",day:"2026-10-05",start:"09:30",end:"10:30",track:"keynote",title:"Opening Keynote: AI and the Future of Learning",room:"Auditorium A",speakers:["s1"],abstract:"Placeholder abstract."},
+  {id:"a3",day:"2026-10-05",start:"10:30",end:"11:00",track:"break",title:"Coffee Break",room:"",speakers:[],abstract:""},
+  {id:"a4",day:"2026-10-05",start:"11:00",end:"12:15",track:"session",title:"Paper Session 1: Assessment & Feedback",room:"Room 201",speakers:["s2","s3"],abstract:"Placeholder abstract."},
+  {id:"a5",day:"2026-10-05",start:"12:15",end:"13:30",track:"break",title:"Lunch",room:"",speakers:[],abstract:""},
+  {id:"a6",day:"2026-10-05",start:"13:30",end:"14:30",track:"virtual",title:"Virtual Track: Global Perspectives on AI Ethics",room:"",speakers:["s4"],abstract:"Placeholder abstract.",zoomUrl:"https://zoom.us/j/000000000"},
+  {id:"a7",day:"2026-10-05",start:"14:45",end:"16:00",track:"panel",title:"Panel: Rethinking the Classroom",room:"Auditorium A",speakers:["s1","s2","s4"],abstract:"Placeholder abstract."},
+  {id:"b1",day:"2026-10-06",start:"09:30",end:"10:30",track:"keynote",title:"Day 2 Keynote: Equity in Intelligent Systems",room:"Auditorium A",speakers:["s3"],abstract:"Placeholder abstract."},
+  {id:"b2",day:"2026-10-06",start:"10:30",end:"11:00",track:"break",title:"Coffee Break",room:"",speakers:[],abstract:""},
+  {id:"b3",day:"2026-10-06",start:"11:00",end:"12:15",track:"session",title:"Paper Session 2: Adaptive Learning Systems",room:"Room 201",speakers:["s2"],abstract:"Placeholder abstract."},
+  {id:"b4",day:"2026-10-06",start:"12:15",end:"13:30",track:"break",title:"Lunch",room:"",speakers:[],abstract:""},
+  {id:"b5",day:"2026-10-06",start:"13:30",end:"14:30",track:"virtual",title:"Virtual Track: Research Showcase",room:"",speakers:["s4"],abstract:"Placeholder abstract.",zoomUrl:"https://zoom.us/j/000000000"},
+  {id:"b6",day:"2026-10-06",start:"14:45",end:"15:30",track:"session",title:"Closing Remarks & Awards",room:"Auditorium A",speakers:["s1"],abstract:"Placeholder abstract."}
+];
+
+/* Announcements — newest first. Add or edit freely. */
+const ANNOUNCEMENTS = [
+  {date:"Oct 1, 2026", title:"Check-in opens at 09:00", body:"Registration is in the main foyer from 09:00 on Day 1. Bring your confirmation email or QR code."},
+  {date:"Sep 20, 2026", title:"Full programme now live", body:"The complete two-day schedule is available in the Schedule tab. Star your sessions to build your agenda."}
+];
+
+/* Seville guide — add/remove sections and items as you like. */
+const SEVILLE = {
+  intro:"Everything you need to arrive, stay, and get around Seville during the conference.",
+  groups:[
+    {title:"Getting here", items:[
+      {h:"From the airport (SVQ)", p:"Seville Airport is about 10 km from the centre. The EA airport bus runs to the city; a taxi takes roughly 20 minutes."},
+      {h:"By train", p:"High-speed AVE trains connect Seville Santa Justa with Madrid, Córdoba, and Málaga."}
+    ]},
+    {title:"Getting around", items:[
+      {h:"Metro & tram", p:"Placeholder. Add the nearest metro/tram stop to the venue and hotels."},
+      {h:"Taxis & rideshare", p:"Placeholder. Add typical fares and any recommended apps."}
+    ]},
+    {title:"Where to stay", items:[
+      {h:"Recommended hotels", p:"Placeholder. List partner or nearby hotels, with any conference rate codes."}
+    ]},
+    {title:"Where to eat", items:[
+      {h:"Near the venue", p:"Placeholder. Add a few tapas bars and restaurants close to FIBES."}
+    ]}
+  ]
+};
+
+/* Sponsors — grouped by tier. tierOrder controls display order. */
+const SPONSOR_TIERS = ["Platinum","Gold","Partners"];
+const SPONSORS = [
+  {name:"Sample Platinum Sponsor", tier:"Platinum", logo:"", url:"#"},
+  {name:"Sample Gold Sponsor", tier:"Gold", logo:"", url:"#"},
+  {name:"Sample Partner", tier:"Partners", logo:"", url:"#"},
+  {name:"Sample Partner", tier:"Partners", logo:"", url:"#"}
+];
+
+/* Organizing committee & contacts. */
+const COMMITTEE = [
+  {name:"Conference Chair — Name", role:"Conference Chair", org:"Horizonne Views", email:""},
+  {name:"Programme Chair — Name", role:"Programme Chair", org:"", email:""},
+  {name:"Communications — Name", role:"Marketing & Communications", org:"", email:"info@horizonneviews.com"}
+];
+
+/* Code of conduct. */
+const CONDUCT = {
+  intro:"SAMYRAD is committed to a respectful, harassment-free experience for everyone, on-site and online.",
+  points:[
+    "Treat all participants, staff, and speakers with courtesy and respect.",
+    "Harassment, discrimination, and disruptive behaviour will not be tolerated.",
+    "Respect session etiquette: silence phones, avoid recording without permission.",
+    "Report any concerns to a member of staff or the contact below."
+  ],
+  contactLabel:"Report a concern",
+  contactEmail:"info@horizonneviews.com"
+};
+
+/* Attendee directory — OPT-IN ONLY. List a person only if they agreed to appear.
+   Public professional info only: name, affiliation, country, research interests,
+   and self-chosen profile links. No emails or phone numbers here.
+   Leave any link field as "" to hide it. All entries below are placeholders. */
+const ATTENDEES = [
+  {name:"Dr. Sara Nguyen", affiliation:"Sample University", country:"Vietnam", interests:"AI tutoring systems, assessment",
+   linkedin:"https://linkedin.com/in/", scholar:"https://scholar.google.com/", researchgate:"", orcid:"", website:""},
+  {name:"Prof. Marco Rossi", affiliation:"Sample Institute", country:"Italy", interests:"Learning analytics",
+   linkedin:"", scholar:"", researchgate:"https://www.researchgate.net/", orcid:"https://orcid.org/", website:""},
+  {name:"Dr. Fatima Al-Rashid", affiliation:"Sample College", country:"Jordan", interests:"Ethics of AI in education",
+   linkedin:"https://linkedin.com/in/", scholar:"", researchgate:"", orcid:"", website:"https://example.com"}
+];
+
+/* Interface translations. Content bodies above stay as you write them;
+   this only translates the app's own labels. Add more languages by copying es. */
+const I18N = {
+  en:{
+    nav_schedule:"Schedule",nav_speakers:"Speakers",nav_saved:"Saved",nav_more:"More",
+    sch_title:"Schedule",sch_sub:"Tap a session for details. Star it to save to your agenda.",
+    spk_title:"Speakers",spk_sub:"Everyone presenting across the two days.",
+    sav_title:"My Agenda",sav_sub:"Sessions you've starred, kept on this device.",
+    more_title:"More",more_sub:"Everything else about the conference.",
+    search_ph:"Search sessions or speakers",filter_all:"All",
+    btn_save:"☆ Save to agenda",btn_saved:"★ Saved",btn_join:"Join virtual session",btn_cal:"Add to calendar",btn_maps:"Open in Maps",
+    empty_nomatch_t:"No sessions match",empty_nomatch_s:"Try clearing the search or filter.",
+    empty_saved_t:"Nothing saved yet",empty_saved_s:"Star sessions on the Schedule tab and they'll gather here.",
+    sessions_label:"Sessions",wifi_label:"Wi-Fi",venue_label:"Venue",virtual_label:"Virtual access",contact_label:"Contact",
+    sec_announcements:"Announcements",sec_venue:"Venue & Map",sec_seville:"Seville Guide",sec_sponsors:"Sponsors & Partners",sec_committee:"Committee & Contacts",sec_conduct:"Code of Conduct",sec_about:"About",sec_language:"Language",
+    sub_announcements:"Latest updates",sub_venue:"Where to go",sub_seville:"Travel, hotels, food",sub_sponsors:"Who makes it possible",sub_committee:"Who to reach",sub_conduct:"Our shared rules",sub_about:"About SAMYRAD",sub_language:"English / Español",
+    choose_lang:"Choose your language",tr_keynote:"Keynote",tr_session:"In-person",tr_virtual:"Virtual",tr_panel:"Panel",tr_break:"Break",
+    sec_attendees:"Attendees",sub_attendees:"Meet who's here",att_search_ph:"Search by name, affiliation, or interest",att_note:"Attendees appear here with their consent. Public professional profiles only, no personal contact details.",att_empty:"No attendees match your search."
+  },
+  es:{
+    nav_schedule:"Programa",nav_speakers:"Ponentes",nav_saved:"Guardado",nav_more:"Más",
+    sch_title:"Programa",sch_sub:"Toca una sesión para ver detalles. Márcala para guardarla en tu agenda.",
+    spk_title:"Ponentes",spk_sub:"Todas las personas que presentan durante los dos días.",
+    sav_title:"Mi Agenda",sav_sub:"Las sesiones que has marcado, guardadas en este dispositivo.",
+    more_title:"Más",more_sub:"Todo lo demás sobre el congreso.",
+    search_ph:"Buscar sesiones o ponentes",filter_all:"Todo",
+    btn_save:"☆ Guardar en agenda",btn_saved:"★ Guardado",btn_join:"Unirse a la sesión virtual",btn_cal:"Añadir al calendario",btn_maps:"Abrir en Mapas",
+    empty_nomatch_t:"Ninguna sesión coincide",empty_nomatch_s:"Prueba a borrar la búsqueda o el filtro.",
+    empty_saved_t:"Aún no hay nada guardado",empty_saved_s:"Marca sesiones en el Programa y aparecerán aquí.",
+    sessions_label:"Sesiones",wifi_label:"Wi-Fi",venue_label:"Sede",virtual_label:"Acceso virtual",contact_label:"Contacto",
+    sec_announcements:"Anuncios",sec_venue:"Sede y Mapa",sec_seville:"Guía de Sevilla",sec_sponsors:"Patrocinadores",sec_committee:"Comité y Contactos",sec_conduct:"Código de Conducta",sec_about:"Acerca de",sec_language:"Idioma",
+    sub_announcements:"Últimas novedades",sub_venue:"Cómo llegar",sub_seville:"Viaje, hoteles, comida",sub_sponsors:"Quién lo hace posible",sub_committee:"A quién contactar",sub_conduct:"Nuestras normas",sub_about:"Acerca de SAMYRAD",sub_language:"English / Español",
+    choose_lang:"Elige tu idioma",tr_keynote:"Conferencia",tr_session:"Presencial",tr_virtual:"Virtual",tr_panel:"Panel",tr_break:"Pausa",
+    sec_attendees:"Asistentes",sub_attendees:"Conoce a quién asiste",att_search_ph:"Buscar por nombre, afiliación o interés",att_note:"Los asistentes aparecen aquí con su consentimiento. Solo perfiles profesionales públicos, sin datos de contacto personales.",att_empty:"Ningún asistente coincide con tu búsqueda."
+  }
+};
+
+/* =========================================================================
+   ▲▲▲  END OF YOUR CONTENT — nothing below needs editing.  ▲▲▲
+   ========================================================================= */
+
+const store = {
+  saved:new Set(), lang:"en",
+  load(){ try{const r=localStorage.getItem('samyrad_saved');if(r)this.saved=new Set(JSON.parse(r));const l=localStorage.getItem('samyrad_lang');if(l)this.lang=l;}catch(e){} },
+  persist(){ try{localStorage.setItem('samyrad_saved',JSON.stringify([...this.saved]));localStorage.setItem('samyrad_lang',this.lang);}catch(e){} },
+  toggle(id){ this.saved.has(id)?this.saved.delete(id):this.saved.add(id); this.persist(); },
+  has(id){return this.saved.has(id)}, count(){return this.saved.size},
+  setLang(l){ this.lang=l; this.persist(); }
+};
+store.load();
+
+const state={day:DAYS[0].id,track:"all",q:""};
+const t = k => (I18N[store.lang]&&I18N[store.lang][k]) || I18N.en[k] || k;
+const speakerById=id=>SPEAKERS.find(s=>s.id===id);
+const sessionById=id=>SESSIONS.find(s=>s.id===id);
+function initials(n){return n.replace(/^(Dr\.|Prof\.)\s*/,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function avatarHTML(s){return s.photo?`<span class="avatar"><img src="${s.photo}" alt="${s.name}"></span>`:`<span class="avatar">${initials(s.name)}</span>`}
+function trackLabel(key){return t('tr_'+key)||TRACKS[key].label}
+function trackPill(key){return `<span class="pill"><span class="dot" style="background:${TRACKS[key].color}"></span>${trackLabel(key)}</span>`}
+function speakerNames(ids){return ids.map(id=>speakerById(id)?.name).filter(Boolean).join(', ')}
+
+/* ---- chrome text ---- */
+function applyChrome(){
+  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll('[data-tph]').forEach(el=>el.placeholder=t(el.dataset.tph));
+  document.documentElement.lang=store.lang;
+}
+
+/* ---- schedule ---- */
+function renderControls(){
+  document.getElementById('dayToggle').innerHTML=DAYS.map(d=>`<button data-day="${d.id}" aria-pressed="${state.day===d.id}">${d.label}</button>`).join('');
+  const chips=[{key:"all",label:t('filter_all')}].concat(Object.keys(TRACKS).filter(k=>k!=='break').map(k=>({key:k,label:trackLabel(k)})));
+  document.getElementById('trackChips').innerHTML=chips.map(c=>{
+    const dot=c.key==="all"?"":`<span class="dot" style="background:${TRACKS[c.key].color}"></span>`;
+    return `<button class="chip" data-track="${c.key}" aria-pressed="${state.track===c.key}">${dot}${c.label}</button>`;
+  }).join('');
+}
+function matchesFilter(s){
+  if(s.day!==state.day)return false;
+  if(state.track!=="all"&&s.track!==state.track)return false;
+  if(state.q){const hay=(s.title+' '+speakerNames(s.speakers)+' '+(s.room||'')).toLowerCase();if(!hay.includes(state.q.toLowerCase()))return false;}
+  return true;
+}
+function sessionCard(s){
+  if(s.track==="break")return `<button class="card break-card" data-open="${s.id}"><div class="body"><h3>${s.start} · ${s.title}</h3></div></button>`;
+  const who=s.speakers.length?`<span class="who">${speakerNames(s.speakers)}</span>`:'';
+  const loc=s.room?`· ${s.room}`:(s.track==="virtual"?'· Online':'');
+  const on=store.has(s.id)?'on':'';
+  return `<div class="card">
+    <button class="body" data-open="${s.id}" style="background:none;text-align:left">
+      <div class="time">${s.start}–${s.end}</div><h3>${s.title}</h3>
+      <div class="metarow">${trackPill(s.track)} ${who} <span>${loc}</span></div>
+    </button>
+    <button class="star ${on}" data-star="${s.id}" aria-label="${t('btn_save')}"><svg viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="1.6"><path d="M12 17.3l-6 3.7 1.6-6.9L2 9.2l7-.6L12 2l3 6.6 7 .6-5.6 4.9 1.6 6.9z"/></svg></button>
+  </div>`;
+}
+function renderSchedule(){
+  const list=SESSIONS.filter(matchesFilter).sort((a,b)=>a.start.localeCompare(b.start));
+  const el=document.getElementById('scheduleList');
+  el.innerHTML=list.length?list.map(sessionCard).join(''):emptyState(t('empty_nomatch_t'),t('empty_nomatch_s'));
+}
+function renderSpeakers(){
+  document.getElementById('speakerList').innerHTML=SPEAKERS.map(s=>`<button class="speaker" data-speaker="${s.id}">${avatarHTML(s)}<div class="body"><h3>${s.name}</h3><p>${s.role}${s.org?' · '+s.org:''}</p></div></button>`).join('');
+}
+function renderSaved(){
+  const el=document.getElementById('savedList');
+  const saved=SESSIONS.filter(s=>store.has(s.id)&&s.track!=="break").sort((a,b)=>(a.day+a.start).localeCompare(b.day+b.start));
+  if(!saved.length){el.innerHTML=emptyState(t('empty_saved_t'),t('empty_saved_s'));updateBadge();return;}
+  let html='';DAYS.forEach(d=>{const day=saved.filter(s=>s.day===d.id);if(day.length)html+=`<div class="timegroup">${d.label}</div>`+day.map(sessionCard).join('');});
+  el.innerHTML=html;updateBadge();
+}
+function emptyState(title,sub){return `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 17.3l-6 3.7 1.6-6.9L2 9.2l7-.6L12 2l3 6.6 7 .6-5.6 4.9 1.6 6.9z"/></svg><h3>${title}</h3><p>${sub}</p></div>`}
+function updateBadge(){const b=document.getElementById('savedBadge'),n=store.count();b.textContent=n;b.hidden=n===0;}
+
+/* ---- hub ---- */
+const HUB=[
+  {key:"announcements",icon:'<path d="M3 11l18-5v12L3 14v-3zM11 18a2 2 0 01-4 0"/>'},
+  {key:"venue",icon:'<path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>'},
+  {key:"seville",icon:'<path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"/>'},
+  {key:"sponsors",icon:'<path d="M12 15a4 4 0 100-8 4 4 0 000 8z"/><path d="M8.5 13L6 21l6-3 6 3-2.5-8"/>'},
+  {key:"committee",icon:'<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 5a3 3 0 010 6M18 20c0-2.4-1-4-2.5-4.9"/>'},
+  {key:"attendees",icon:'<rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="2.4"/><path d="M8.5 16.5c0-2 1.6-3 3.5-3s3.5 1 3.5 3"/><path d="M4 8h1.5M4 12h1.5M4 16h1.5"/>'},
+  {key:"conduct",icon:'<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>'},
+  {key:"about",icon:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>'},
+  {key:"language",icon:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>'}
+];
+function renderHub(){
+  document.getElementById('hubTiles').innerHTML=HUB.map(h=>{
+    const badge=h.key==="announcements"&&ANNOUNCEMENTS.length?`<span class="badge2">${ANNOUNCEMENTS.length}</span>`:'';
+    return `<button class="tile" data-section="${h.key}">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">${h.icon}</svg></span>
+      <h3>${t('sec_'+h.key)}</h3><p>${t('sub_'+h.key)}</p>${badge}</button>`;
+  }).join('');
+}
+
+/* ---- sub-pages ---- */
+function openSection(key){
+  document.getElementById('sectionTitle').textContent=t('sec_'+key);
+  document.getElementById('sectionBody').innerHTML=sectionBody(key);
+  if(key==="attendees")renderAttendeesList();
+  show('section');
+}
+function renderAttendeesList(){
+  const box=document.getElementById('attList');if(!box)return;
+  const q=(document.getElementById('attSearch')?.value||'').toLowerCase();
+  const list=ATTENDEES.filter(a=>!q||(a.name+' '+a.affiliation+' '+(a.country||'')+' '+(a.interests||'')).toLowerCase().includes(q));
+  if(!list.length){box.innerHTML=`<p class="att-note" style="padding:10px 0 0">${t('att_empty')}</p>`;return;}
+  box.innerHTML=list.map(a=>{
+    const L=[];
+    if(a.linkedin)L.push(`<a class="linkpill" href="${a.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`);
+    if(a.scholar)L.push(`<a class="linkpill" href="${a.scholar}" target="_blank" rel="noopener">Google Scholar</a>`);
+    if(a.researchgate)L.push(`<a class="linkpill" href="${a.researchgate}" target="_blank" rel="noopener">ResearchGate</a>`);
+    if(a.orcid)L.push(`<a class="linkpill" href="${a.orcid}" target="_blank" rel="noopener">ORCID</a>`);
+    if(a.website)L.push(`<a class="linkpill" href="${a.website}" target="_blank" rel="noopener">Website</a>`);
+    return `<div class="att"><span class="avatar">${initials(a.name)}</span><div class="body"><h3>${a.name}</h3><div class="aff">${a.affiliation}${a.country?' · '+a.country:''}</div>${a.interests?`<div class="int">${a.interests}</div>`:''}${L.length?`<div class="linkpills">${L.join('')}</div>`:''}</div></div>`;
+  }).join('');
+}
+function sectionBody(key){
+  const C=CONFERENCE;
+  if(key==="announcements")
+    return ANNOUNCEMENTS.map(a=>`<div class="ann"><div class="d">${a.date}</div><h3>${a.title}</h3><p>${a.body}</p></div>`).join('')||emptyState('—','');
+  if(key==="venue")
+    return `<div class="block"><h3>${t('venue_label')}</h3><p>${C.venueName}<br>${C.venueAddress}</p>
+      <div class="mapbox" style="margin-top:12px">${C.floorPlanImage?`<img src="${C.floorPlanImage}" alt="Floor plan">`:'Add a floor plan image URL in CONFERENCE.floorPlanImage'}</div>
+      <a class="linkrow" href="${C.mapUrl}" target="_blank" rel="noopener">${t('btn_maps')} →</a></div>
+      <div class="block"><h3>${t('wifi_label')}</h3><p>${C.wifi}</p></div>`;
+  if(key==="seville")
+    return `<div class="block"><p>${SEVILLE.intro}</p></div>`+SEVILLE.groups.map(g=>
+      `<div class="block"><h3>${g.title}</h3>${g.items.map(i=>`<h4>${i.h}</h4><p>${i.p}</p>`).join('')}</div>`).join('');
+  if(key==="sponsors")
+    return SPONSOR_TIERS.map(tier=>{
+      const list=SPONSORS.filter(s=>s.tier===tier);if(!list.length)return'';
+      return `<div class="tier-label">${tier}</div><div class="logos">${list.map(s=>
+        `<a class="logo-card" href="${s.url}" target="_blank" rel="noopener">${s.logo?`<img src="${s.logo}" alt="${s.name}">`:s.name}</a>`).join('')}</div>`;
+    }).join('');
+  if(key==="committee")
+    return `<div class="block">${COMMITTEE.map(p=>`<div class="person">${avatarHTML(p)}<div class="body"><h3>${p.name}</h3><p>${p.role}${p.org?' · '+p.org:''}${p.email?` · <a href="mailto:${p.email}">${p.email}</a>`:''}</p></div></div>`).join('')}</div>`;
+  if(key==="conduct")
+    return `<div class="block"><p>${CONDUCT.intro}</p>${CONDUCT.points.map(p=>`<p style="margin-top:10px">• ${p}</p>`).join('')}
+      <a class="linkrow" href="mailto:${CONDUCT.contactEmail}">${CONDUCT.contactLabel} →</a></div>`;
+  if(key==="about")
+    return `<div class="block"><h3>SAMYRAD 2026</h3><p>${C.about}</p></div>
+      <div class="block"><h3>${t('contact_label')}</h3><p><a href="mailto:${C.contactEmail}">${C.contactEmail}</a></p></div>`;
+  if(key==="attendees")
+    return `<div class="block"><p class="att-note">${t('att_note')}</p>
+      <input class="search att-search" id="attSearch" type="search" placeholder="${t('att_search_ph')}">
+      <div id="attList"></div></div>`;
+  if(key==="language")
+    return `<div class="block"><h3>${t('choose_lang')}</h3><div class="langrow">
+      <button class="langbtn" data-lang="en" aria-pressed="${store.lang==='en'}">English</button>
+      <button class="langbtn" data-lang="es" aria-pressed="${store.lang==='es'}">Español</button></div></div>`;
+  return '';
+}
+
+/* ---- modal ---- */
+function gcalLink(s){const d=s.day.replace(/-/g,'');const x=v=>v.replace(':','')+'00';const dates=`${d}T${x(s.start)}/${d}T${x(s.end)}`;const loc=encodeURIComponent(s.room||CONFERENCE.venueName);return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(s.title)}&dates=${dates}&location=${loc}&details=${encodeURIComponent(s.abstract||'')}`;}
+function openSession(id){
+  const s=sessionById(id);if(!s)return;const spk=s.speakers.map(speakerById).filter(Boolean);const on=store.has(s.id);
+  document.getElementById('modalContent').innerHTML=`
+    <div class="m-time">${DAYS.find(d=>d.id===s.day)?.label} · ${s.start}–${s.end}</div>
+    <h2>${s.title}</h2>
+    <div class="m-meta">${trackPill(s.track)} ${s.room?`<span class="pill">${s.room}</span>`:''} ${s.track==="virtual"?'<span class="pill">Online</span>':''}</div>
+    <div class="m-body">${s.abstract?`<p>${s.abstract}</p>`:''}</div>
+    ${spk.map(sp=>`<div class="m-speaker">${avatarHTML(sp)}<div class="body"><h3 style="font-size:14.5px">${sp.name}</h3><p style="font-size:12.5px;color:var(--ink-soft)">${sp.role}${sp.org?' · '+sp.org:''}</p></div></div>`).join('')}
+    <div class="m-actions">
+      <button class="btn ${on?'btn-ghost':'btn-primary'}" data-star="${s.id}" data-frommodal="1">${on?t('btn_saved'):t('btn_save')}</button>
+      ${s.track==="virtual"&&s.zoomUrl?`<a class="btn btn-accent" href="${s.zoomUrl}" target="_blank" rel="noopener">${t('btn_join')}</a>`:''}
+      <a class="btn btn-ghost" href="${gcalLink(s)}" target="_blank" rel="noopener">${t('btn_cal')}</a>
+    </div>`;
+  openModal();
+}
+function openSpeaker(id){
+  const s=speakerById(id);if(!s)return;const sess=SESSIONS.filter(x=>x.speakers.includes(id));
+  document.getElementById('modalContent').innerHTML=`
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px">${avatarHTML(s)}<div><h2 style="margin:0">${s.name}</h2><div class="m-time">${s.role}${s.org?' · '+s.org:''}</div></div></div>
+    <div class="m-body"><p>${s.bio}</p></div>
+    ${sess.length?`<div class="timegroup">${t('sessions_label')}</div>${sess.map(x=>`<button class="card" data-open="${x.id}" style="text-align:left"><div class="body"><div class="time">${DAYS.find(d=>d.id===x.day)?.label} · ${x.start}</div><h3>${x.title}</h3></div></button>`).join('')}`:''}`;
+  openModal();
+}
+const modalBg=document.getElementById('modalBg');
+function openModal(){modalBg.classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){modalBg.classList.remove('open');document.body.style.overflow='';}
+modalBg.addEventListener('click',e=>{if(e.target===modalBg)closeModal();});
+
+/* ---- nav ---- */
+let lastHub='more';
+function show(screen){
+  ['schedule','speakers','saved','more','section'].forEach(n=>document.getElementById('screen-'+n).hidden=n!==screen);
+  const navFor = screen==='section' ? 'more' : screen;
+  document.querySelectorAll('.tab').forEach(tb=>tb.setAttribute('aria-current',tb.dataset.screen===navFor));
+  if(screen==='saved')renderSaved();
+  if(screen==='more')renderHub();
+  window.scrollTo(0,0);
+}
+document.getElementById('backBtn').addEventListener('click',()=>show('more'));
+
+/* ---- events ---- */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-screen],[data-open],[data-star],[data-speaker],[data-day],[data-track],[data-section],[data-lang]');
+  if(!el)return;
+  if(el.dataset.screen)show(el.dataset.screen);
+  else if(el.dataset.section)openSection(el.dataset.section);
+  else if(el.dataset.day){state.day=el.dataset.day;renderControls();renderSchedule();}
+  else if(el.dataset.track){state.track=el.dataset.track;renderControls();renderSchedule();}
+  else if(el.dataset.open)openSession(el.dataset.open);
+  else if(el.dataset.speaker)openSpeaker(el.dataset.speaker);
+  else if(el.dataset.lang){store.setLang(el.dataset.lang);renderAll();openSection('language');}
+  else if(el.dataset.star){store.toggle(el.dataset.star);renderSchedule();if(!document.getElementById('screen-saved').hidden)renderSaved();updateBadge();if(el.dataset.frommodal)openSession(el.dataset.star);}
+});
+document.getElementById('search').addEventListener('input',e=>{state.q=e.target.value;renderSchedule();});
+document.addEventListener('input',e=>{if(e.target.id==='attSearch')renderAttendeesList();});
+
+/* ---- init ---- */
+function renderAll(){applyChrome();renderControls();renderSchedule();renderSpeakers();renderHub();updateBadge();}
+renderAll();
+</script>
+</body>
+</html>
